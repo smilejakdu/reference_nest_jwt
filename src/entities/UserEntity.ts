@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("users")
+@Index("userId", ["userId"], { unique: true })
+@Entity({ schema: "jwt_test2", name: "users" })
 export class UserEntity {
   @PrimaryGeneratedColumn()
   public userId: number;

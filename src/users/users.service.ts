@@ -1,5 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { UserEntity } from "../entities/UserEntity";
 
 export type User = any;
 
@@ -7,25 +10,11 @@ export type User = any;
 export class UsersService {
   private readonly users: User[];
 
-  constructor(private readonly jwtService: JwtService) {
-    this.users = [
-      {
-        userId: 1,
-        username: "john",
-        password: "changeme",
-      },
-      {
-        userId: 2,
-        username: "chris",
-        password: "secret",
-      },
-      {
-        userId: 3,
-        username: "maria",
-        password: "guess",
-      },
-    ];
-  }
+  constructor(
+    @InjectRepository(UserEntity)
+    private usersRepository: Repository<UserEntity>,
+    private readonly jwtService: JwtService
+  ) {}
   // async validateUser(username: string, pass: string): Promise<any> {
   //   const user = await this.user.findOne(username);
   //   if (user && user.password === pass) {
@@ -35,8 +24,10 @@ export class UsersService {
   //   return null;
   // }
 
-  async findOne(username: string): Promise<User | undefined> {
-    const foundUser = this.users.find((user) => user.username === username);
+  async findOne(username: string) {
+    const foundUser = await this.usersRepository.findOne({
+      where: { username: username },
+    });
     if (foundUser && foundUser.password) {
       const { password, ...result } = foundUser;
       return result;
@@ -44,8 +35,14 @@ export class UsersService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+  async login(username: string, password: string) {
+    const foundUser = await this.usersRepository.findOne({
+      where: { username: username, password: password },
+    });
+    if (!foundUser) {
+      return "does not exist user";
+    }
+    const payload = { username: foundUser.username, sub: foundUser.userId };
     return {
       access_token: this.jwtService.sign(payload),
     };

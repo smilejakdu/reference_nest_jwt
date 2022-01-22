@@ -6,9 +6,12 @@ import { PassportModule } from "@nestjs/passport";
 import { jwtConstants } from "src/constants";
 import { LocalStrategy } from "src/strategies/local.strategy";
 import { JwtStrategy } from "src/strategies/jwt.strategy";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserEntity } from "../entities/UserEntity";
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([UserEntity]),
     UsersModule,
     PassportModule,
     JwtModule.register({
