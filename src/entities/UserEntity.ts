@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Index("userId", ["userId"], { unique: true })
@@ -6,9 +7,17 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   public userId: number;
 
+  @ApiProperty({
+    example: "username",
+    description: "username",
+  })
   @Column()
   public username: string;
 
+  @ApiProperty({
+    example: "password",
+    description: "password",
+  })
   @Column()
   public password: string;
 }
