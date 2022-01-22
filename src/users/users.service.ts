@@ -48,7 +48,16 @@ export class UsersService {
     };
   }
 
-  async userProfile() {
-    return;
+  async userProfile(userId: number, username: string) {
+    console.log(userId, username);
+    const foundUser = await this.usersRepository.findOne({
+      where: { userId: userId, username: username },
+    });
+    console.log(foundUser);
+    if (!foundUser) {
+      return "does not exist user";
+    }
+    delete foundUser.password;
+    return foundUser;
   }
 }

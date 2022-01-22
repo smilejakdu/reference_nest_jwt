@@ -14,7 +14,7 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @UseGuards(LocalAuthGuard)
+  // @UseGuards(LocalAuthGuard)
   @Post("login")
   async login(@Body() body) {
     const { username, password } = body;
@@ -24,6 +24,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get("profile")
   getProfile(@Request() req) {
-    return req.user;
+    const { username, userId } = req.user;
+    return this.userService.userProfile(userId, username);
   }
 }
