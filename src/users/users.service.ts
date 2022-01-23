@@ -15,14 +15,6 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService
   ) {}
-  // async validateUser(username: string, pass: string): Promise<any> {
-  //   const user = await this.user.findOne(username);
-  //   if (user && user.password === pass) {
-  //     const { password, ...result } = user;
-  //     return result;
-  //   }
-  //   return null;
-  // }
 
   async findOne(username: string) {
     const foundUser = await this.usersRepository.findOne({

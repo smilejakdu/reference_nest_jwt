@@ -9,6 +9,10 @@ async function bootstrap() {
     .setDescription("JWT TEST API description")
     .setVersion("1.0")
     .addTag("jwt_test")
+    .addBearerAuth(
+      { type: "http", scheme: "bearer", bearerFormat: "JWT", in: "header" },
+      "access-token"
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("apis", app, document);
