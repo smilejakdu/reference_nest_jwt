@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UserEntity } from "../entities/UserEntity";
@@ -8,12 +7,9 @@ export type User = any;
 
 @Injectable()
 export class UsersService {
-  private readonly users: User[];
-
   constructor(
     @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
-    private readonly jwtService: JwtService
+    private usersRepository: Repository<UserEntity>
   ) {}
 
   async findOne(username: string) {
@@ -32,16 +28,19 @@ export class UsersService {
       where: { username: username, password: password },
     });
     if (!foundUser) {
-      return "does not exist user";
+      return {
+        ok: false,
+        statusCode: 400,
+      };
     }
-    const payload = { username: foundUser.username, sub: foundUser.userId };
+    delete foundUser.password;
     return {
-      access_token: this.jwtService.sign(payload),
+      userId: foundUser.userId,
+      username: foundUser.username,
     };
   }
 
   async userProfile(userId: number, username: string) {
-    console.log(userId, username);
     const foundUser = await this.usersRepository.findOne({
       where: { userId: userId, username: username },
     });

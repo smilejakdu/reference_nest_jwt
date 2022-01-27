@@ -10,7 +10,7 @@ async function bootstrap() {
     .setVersion("1.0")
     .addTag("jwt_test")
     .addBearerAuth(
-      { type: "http", scheme: "bearer", bearerFormat: "JWT", in: "header" },
+      { type: "http", scheme: "Bearer", bearerFormat: "Token", in: "header" },
       "access-token"
     )
     .build();
