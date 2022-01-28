@@ -30,7 +30,10 @@ export class LoginRequestDto {
 @ApiTags("USERS")
 @Controller("users")
 export class UsersController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UsersService
+  ) {}
 
   @Post("login")
   async login(@Body() body: LoginRequestDto) {
