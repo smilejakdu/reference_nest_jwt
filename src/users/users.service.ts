@@ -18,7 +18,11 @@ export class UsersService {
     });
     if (foundUser && foundUser.password) {
       const { password, ...result } = foundUser;
-      return result;
+      return {
+        ok: true,
+        userId: result.userId,
+        username: result.username,
+      };
     }
     return null;
   }

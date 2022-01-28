@@ -38,7 +38,10 @@ export class UsersController {
   @Post("login")
   async login(@Body() body: LoginRequestDto) {
     const { username, password } = body;
-    return await this.authService.login(username, password);
+    const responseToken = await this.authService.login(username, password);
+    return {
+      access_token: responseToken,
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -46,9 +49,8 @@ export class UsersController {
   @Get("profile")
   async getProfile(@Request() req) {
     const { userId, username } = req.user;
-    return {
-      userId: userId,
-      username: username,
-    };
+    console.log(userId, username);
+    const responseUser = await this.userService.findOne(username);
+    return responseUser;
   }
 }
