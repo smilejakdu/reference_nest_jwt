@@ -6,6 +6,7 @@ import { ConfigModule } from "@nestjs/config";
 import { AuthService } from "./auth/auth.service";
 import { AuthModule } from "./auth/auth.module";
 import { LoggerMiddleware } from "./middlewares/logger.middlewares";
+import { JwtModule, JwtService } from "@nestjs/jwt";
 
 @Module({
   imports: [

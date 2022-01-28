@@ -35,6 +35,7 @@ export class UsersService {
     }
     delete foundUser.password;
     return {
+      ok: true,
       userId: foundUser.userId,
       username: foundUser.username,
     };
