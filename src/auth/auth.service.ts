@@ -15,10 +15,17 @@ export class AuthService {
   }
 
   async login(username: string, password: string) {
-    const user = await this.userService.login(username, password);
+    const user = await this.userService.findUser(username, password);
     const payload = { username: user.username, userId: user.userId };
     const token = await this.jwtService.signAsync(payload);
-    return token;
+    return {
+      ok: true,
+      user: {
+        userId: user.userId,
+        username: user.username,
+      },
+      token: token,
+    };
   }
 
   async makeToken(username: string, userId: number) {

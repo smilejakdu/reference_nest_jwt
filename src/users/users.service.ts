@@ -27,7 +27,7 @@ export class UsersService {
     return null;
   }
 
-  async login(username: string, password: string) {
+  async findUser(username: string, password: string) {
     const foundUser = await this.usersRepository.findOne({
       where: { username: username, password: password },
     });
@@ -49,7 +49,6 @@ export class UsersService {
     const foundUser = await this.usersRepository.findOne({
       where: { userId: userId, username: username },
     });
-    console.log(foundUser);
     if (!foundUser) {
       return "does not exist user";
     }
